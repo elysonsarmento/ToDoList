@@ -1,0 +1,4 @@
+lib/app/modules/home/item/item_widget.dart
+test/app/modules/home/item/item_widget_test.dart
+lib/app/modules/home/item/item_controller.dart
+test/app/modules/home/item/item_controller_test.dart
