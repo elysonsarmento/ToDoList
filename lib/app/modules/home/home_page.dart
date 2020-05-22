@@ -24,7 +24,9 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             child: Icon(Icons.add), onPressed: () => _dialog()),
         appBar: AppBar(
           title:
-              TextField(decoration: InputDecoration(hintText: "Pesquisar...")),
+              TextField(
+                onChanged: controller.setFilter,
+                decoration: InputDecoration(hintText: "Pesquisar...")),
               actions: <Widget>[
                 IconButton(icon: Observer(builder: (_) {
                    return Text('${controller.totalChecked}');
@@ -36,7 +38,7 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
           return ListView.builder(
               itemCount: controller.listItems.length,
               itemBuilder: (_, index) {
-                var item = controller.listItems[index];
+                var item = controller.listFiltered[index];
                 return ItemWidget(item: item, removeClicked: (){
                   controller.removeItem(item);
                 },);

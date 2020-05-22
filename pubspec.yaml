@@ -21,6 +21,8 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
 
 dependencies:
+  path_provider: ^1.6.9
+  hive: ^1.4.1+1
   dio: ^3.0.9
   flutter_mobx: ^1.1.0
   mobx: ^1.2.1
