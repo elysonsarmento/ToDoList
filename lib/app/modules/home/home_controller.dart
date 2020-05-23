@@ -1,28 +1,42 @@
+import 'package:flutter_modular/flutter_modular.dart';
 import 'package:mobx/mobx.dart';
 import '../../models/item_model.dart';
+import '../../shared/repositories/localStorage/locale_storage_interface.dart';
 
 part 'home_controller.g.dart';
 
 class HomeController = _HomeControllerBase with _$HomeController;
 
 abstract class _HomeControllerBase with Store {
+  ItemModel item;
+  final ILocaleStorage _storage = Modular.get();
+
+  _HomeControllerBase() {
+    init();
+  }
+
   @observable
-  List<ItemModel> listItems = [
-    ItemModel(title: 'item 1', check: true),
-    ItemModel(title: 'item 2', check: false),
-    ItemModel(title: 'item 3', check: false),
-  ].asObservable();
+  ObservableList<ItemModel> listItems = ObservableList<ItemModel>();
 
-  @computed
-  int get totalChecked => listItems.where((element) => element.check).length;
-
-  @action
-  addItem(ItemModel model) {
-    listItems.add(model);
+  init() async {
+    var listLocal = await _storage.get();
+    if (listLocal == null) {
+      listItems = <ItemModel>[].asObservable();
+    } else {
+      listItems.addAll(listLocal);
+    }
   }
 
   @action
-  removeItem(ItemModel model) {
-    listItems.removeWhere((element) => element.title == model.title);
+  void save(ItemModel item) {
+    item.setCheck(false);
+    listItems.add(item);
+    _storage.put('list', item);
+  }
+
+  @action
+  void remove(int index) {
+    listItems.removeAt(index);
+    _storage.put('list', listItems[index]);
   }
 }

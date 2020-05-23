@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import '../../models/item_model.dart';
-
 import 'home_controller.dart';
 import 'item/item_widget.dart';
 
@@ -21,13 +20,15 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
         floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add), onPressed: () => _dialog()),
+            child: Icon(Icons.add), onPressed: ()  {
+            print ('${controller.listItems}');
+            return _dialog();}),
         appBar: AppBar(
           title:
               TextField(decoration: InputDecoration(hintText: "Pesquisar...")),
               actions: <Widget>[
                 IconButton(icon: Observer(builder: (_) {
-                   return Text('${controller.totalChecked}');
+                   return Text('${controller.listItems.length}');
                 },
                 ), onPressed: null)
               ],
@@ -38,14 +39,14 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
               itemBuilder: (_, index) {
                 var item = controller.listItems[index];
                 return ItemWidget(item: item, removeClicked: (){
-                  controller.removeItem(item);
+                  controller.remove(index);
                 },);
               });
         }));
   }
 
   _dialog() {
-    var model = ItemModel();
+    final model = ItemModel();
     showDialog(
         context: context,
         builder: (_) {
@@ -61,7 +62,8 @@ class _HomePageState extends ModularState<HomePage, HomeController> {
             actions: <Widget>[
               FlatButton(
                   onPressed: () {
-                    return controller.addItem(model);
+                    controller.save(model);
+                    return Navigator.pop(context);
                   },
                   child: Text('Salvar')),
               FlatButton(

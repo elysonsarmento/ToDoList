@@ -17,10 +17,10 @@ class ItemWidget extends StatelessWidget {
     return Observer(
       builder: (_) {
         return ListTile(
-            title: Text(item.title),
+            title: Text('${item.title}'),
             leading: Checkbox(value: item.check, onChanged: item.setCheck),
             trailing: IconButton(
-              icon: Icon(Icons.remove_circle),
+              icon: Icon(Icons.remove_circle_outline),
               onPressed: removeClicked,
             ));
       },

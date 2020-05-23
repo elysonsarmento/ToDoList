@@ -9,24 +9,16 @@ part of 'home_controller.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeController on _HomeControllerBase, Store {
-  Computed<int> _$totalCheckedComputed;
-
-  @override
-  int get totalChecked =>
-      (_$totalCheckedComputed ??= Computed<int>(() => super.totalChecked,
-              name: '_HomeControllerBase.totalChecked'))
-          .value;
-
   final _$listItemsAtom = Atom(name: '_HomeControllerBase.listItems');
 
   @override
-  List<ItemModel> get listItems {
+  ObservableList<ItemModel> get listItems {
     _$listItemsAtom.reportRead();
     return super.listItems;
   }
 
   @override
-  set listItems(List<ItemModel> value) {
+  set listItems(ObservableList<ItemModel> value) {
     _$listItemsAtom.reportWrite(value, super.listItems, () {
       super.listItems = value;
     });
@@ -36,22 +28,22 @@ mixin _$HomeController on _HomeControllerBase, Store {
       ActionController(name: '_HomeControllerBase');
 
   @override
-  dynamic addItem(ItemModel model) {
+  void save(ItemModel item) {
     final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
-        name: '_HomeControllerBase.addItem');
+        name: '_HomeControllerBase.save');
     try {
-      return super.addItem(model);
+      return super.save(item);
     } finally {
       _$_HomeControllerBaseActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  dynamic removeItem(ItemModel model) {
+  void remove(int index) {
     final _$actionInfo = _$_HomeControllerBaseActionController.startAction(
-        name: '_HomeControllerBase.removeItem');
+        name: '_HomeControllerBase.remove');
     try {
-      return super.removeItem(model);
+      return super.remove(index);
     } finally {
       _$_HomeControllerBaseActionController.endAction(_$actionInfo);
     }
@@ -60,8 +52,7 @@ mixin _$HomeController on _HomeControllerBase, Store {
   @override
   String toString() {
     return '''
-listItems: ${listItems},
-totalChecked: ${totalChecked}
+listItems: ${listItems}
     ''';
   }
 }
